@@ -7,7 +7,7 @@ import com.github.nscala_time.time.Imports._
 object TimeHelper {
 
   def hoursPassedSince(dateTime: DateTime): DurationBuilder = {
-    ((Clock.getCurrentDateTime to dateTime).millis/1000/60/60).toInt.hour
+    ((dateTime to Clock.getCurrentDateTime).millis/1000/60/60).toInt.hour
   }
 
   def hasAYearPassed: Boolean = Clock.startDateTime + 1.year < Clock.getCurrentDateTime

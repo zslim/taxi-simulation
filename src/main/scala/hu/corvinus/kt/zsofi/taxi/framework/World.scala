@@ -42,10 +42,6 @@ object World {
     State.orderHistory = State.orderHistory :+ record
   }
 
-}
-
-object Initializer {
-
   def initializeDrivers(): Unit = {
     for (i <- 1 to State.numberOfDrivers) {
       val workingHours: Int = 1 + Random.nextInt(12)

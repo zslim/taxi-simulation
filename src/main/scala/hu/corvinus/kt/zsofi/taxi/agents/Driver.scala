@@ -4,7 +4,6 @@ import hu.corvinus.kt.zsofi.taxi.framework.Clock
 import hu.corvinus.kt.zsofi.taxi.helpers.{AccountingHelper, TimeHelper}
 import hu.corvinus.kt.zsofi.taxi.operation.{Company, Order, OrderRecordDriver}
 import com.github.nscala_time.time.Imports._
-import com.github.nscala_time.time.OrderingImplicits.DateTimeOrdering
 
 class Driver(val workingHours: Int, val startingHour: Int, var company: Company.Value) {
 
@@ -13,9 +12,11 @@ class Driver(val workingHours: Int, val startingHour: Int, var company: Company.
   def isWorking: Boolean = Clock.getCurrentHour - startingHour < workingHours  // is Driver working
 
   def isFree: Boolean = {  // is Driver free to take a new Order
-    val lastOrder: OrderRecordDriver = orderHistory.max(DateTimeOrdering)
-    val timeSinceLastOrder: Duration = TimeHelper.hoursPassedSince(lastOrder.dateTime)
-    timeSinceLastOrder > 1.hour
+    if (orderHistory.length > 0) {
+      val lastOrder: OrderRecordDriver = orderHistory.maxBy(_.dateTime)
+      val timeSinceLastOrder: Duration = TimeHelper.hoursPassedSince(lastOrder.dateTime)
+      timeSinceLastOrder > 1.hour
+    } else true
   }
 
   def takeOrder(order: Order): Unit = {
