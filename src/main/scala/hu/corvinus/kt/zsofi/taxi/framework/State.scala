@@ -10,6 +10,8 @@ object State {
   val numberOfDrivers: Int = 60
   var drivers: Array[Driver] = Array()
 
+  val workingDaysInMonth: Int = 30
+
   private val baseFare: Int = 450
   private val distanceBasedFareUnit: Int = 280
 

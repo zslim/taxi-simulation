@@ -24,15 +24,20 @@ object AccountingHelper {
     }
   }
 
-  def calculateAvgProfitPerOrderInLastMonth(company: Company.Value): Int = {
+  def getNetIncomePerOrderForLastMonth(company: Company.Value): Int = {
+    val orders: Array[OrderRecordState] = getOrdersOfCompanyForLastMonth(company)
+    math.round((orders.map(_.price).sum - orders.map(calculateCostsOfOrder).sum) / orders.length)
+  }
+
+  def getOrdersOfCompanyForLastMonth(company: Company.Value): Array[OrderRecordState] = {
     val orders: Array[OrderRecordState] = State.orderHistory.filter(
       record => TimeHelper.inLastMonth(record.dateTime) && record.company == company
     )
-    val sumOfIncome: Int = orders.map(_.price).sum
-    val costList: Array[Int] = for (order <- orders) yield calculateCostsOfOrder(order)
-    val sumOfCostsOfOrders: Int = costList.sum
-    val averageProfit: Double = (sumOfIncome - sumOfCostsOfOrders - calculateMonthlyCost(company)) / orders.length
-    math.round(averageProfit).toInt
+    orders
+  }
+
+  def getExpectedIncome(workingHours: Int, company: Company.Value): Int = {
+    getNetIncomePerOrderForLastMonth(company) * workingHours * State.workingDaysInMonth - calculateMonthlyCost(company)
   }
 
 }

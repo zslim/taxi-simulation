@@ -30,9 +30,9 @@ class Driver(val workingHours: Int, val startingHour: Int, var company: Company.
   }
 
   private def chooseCompany(): Company.Value = {
-    val avgProfitTaxi: Int = AccountingHelper.calculateAvgProfitPerOrderInLastMonth(Company.TAXI)
-    val avgProfitUber: Int = AccountingHelper.calculateAvgProfitPerOrderInLastMonth(Company.UBER)
-    if (avgProfitTaxi > avgProfitUber) Company.TAXI else Company.UBER
+    val expectedProfitTaxi: Int = AccountingHelper.getExpectedIncome(workingHours, Company.TAXI)
+    val expectedProfitUber: Int = AccountingHelper.getExpectedIncome(workingHours, Company.UBER)
+    if (expectedProfitTaxi > expectedProfitUber) Company.TAXI else Company.UBER
   }
 
   def takeMonthlyDecision(): Unit = {
