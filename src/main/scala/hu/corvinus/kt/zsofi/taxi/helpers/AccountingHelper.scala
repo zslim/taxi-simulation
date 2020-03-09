@@ -26,7 +26,9 @@ object AccountingHelper {
 
   def getNetIncomePerOrderForLastMonth(company: Company.Value): Int = {
     val orders: Array[OrderRecordState] = getOrdersOfCompanyForLastMonth(company)
-    math.round((orders.map(_.price).sum - orders.map(calculateCostsOfOrder).sum) / orders.length)
+    if (orders.length > 0) {
+      math.round((orders.map(_.price).sum - orders.map(calculateCostsOfOrder).sum) / orders.length)
+    } else 0
   }
 
   def getOrdersOfCompanyForLastMonth(company: Company.Value): Array[OrderRecordState] = {
