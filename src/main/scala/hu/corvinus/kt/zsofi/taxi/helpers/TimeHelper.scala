@@ -17,6 +17,13 @@ object TimeHelper {
     now.getHourOfDay == 23 && now.getMonthOfYear != (now + 1.day).getMonthOfYear
   }
 
+  def getCurrentMonth: String = {
+    val monthMap: Map[Int, String] = Map(1 -> "January", 2 -> "February", 3 -> "March", 4 -> "April", 5 -> "May",
+      6 -> "June", 7 -> "July", 8 -> "August", 9 -> "September", 10 -> "October", 11 -> "November", 12 -> "December")
+    val currentMonthNumber: Int = Clock.getCurrentDateTime.getMonthOfYear
+    monthMap(currentMonthNumber)
+  }
+
   def inLastMonth(datetime: DateTime): Boolean = {
     val oneMonthAgo: DateTime = Clock.getCurrentDateTime.minus(1.month)
     oneMonthAgo < datetime

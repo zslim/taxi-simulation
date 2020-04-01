@@ -12,6 +12,7 @@ object World {
   def operateForAYear(): Unit = {
     while (!TimeHelper.hasAYearPassed) {
       if (TimeHelper.isEndOfMonth) {
+        println(s"End of ${TimeHelper.getCurrentMonth}")
         driversDecide()
       }
       operateForAnHour()
