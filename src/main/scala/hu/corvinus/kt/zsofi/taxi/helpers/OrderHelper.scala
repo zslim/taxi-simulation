@@ -10,7 +10,11 @@ object OrderHelper {
   def ordersOfCurrentHour(): Array[Order] = {
     val hour: Int = Clock.getCurrentHour
     val numberOfOrders: Int = State.getNumberOfOrdersForHour(hour)
-    for (n <- Array(1 to numberOfOrders)) yield generateOrder()
+    var result: Array[Order] = Array()
+    for (_ <- 1 to numberOfOrders) {
+      result = result :+ generateOrder()
+    }
+    result
   }
 
   def generateOrder(): Order = {
