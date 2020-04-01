@@ -7,6 +7,7 @@ object ApplicationRunner {
 
   def main(args: Array[String]): Unit = {
     println("Starting a one-year trial.")
+    Reporter.reportInitialParameters()
     World.initializeDrivers()
     World.operateForAYear()
     Reporter.reportEndStatus()

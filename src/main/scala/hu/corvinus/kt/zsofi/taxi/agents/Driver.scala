@@ -1,15 +1,15 @@
 package hu.corvinus.kt.zsofi.taxi.agents
 
-import hu.corvinus.kt.zsofi.taxi.framework.Clock
+import hu.corvinus.kt.zsofi.taxi.framework.{Clock, State}
 import hu.corvinus.kt.zsofi.taxi.helpers.{AccountingHelper, TimeHelper}
-import hu.corvinus.kt.zsofi.taxi.operation.{Company, Order, OrderRecordDriver}
+import hu.corvinus.kt.zsofi.taxi.operation.{Company, CompanyChangeRecord, Order, OrderRecordDriver}
 import com.github.nscala_time.time.Imports._
 
-class Driver(val workingHours: Int, val startingHour: Int, var company: Company.Value) {
+class Driver(val id: Int, val workingHours: Int, val startingHour: Int, var company: Company.Value) {
 
   var orderHistory: Array[OrderRecordDriver] = Array()
 
-  override def toString: String = s"Driver(works $workingHours hours, starts at $startingHour, done ${orderHistory.length} orders)"
+  override def toString: String = s"Driver(id: $id, works $workingHours hours, starts at $startingHour, done ${orderHistory.length} orders)"
 
   def isWorking: Boolean = Clock.getCurrentHour - startingHour < workingHours  // is Driver working
 
@@ -32,19 +32,25 @@ class Driver(val workingHours: Int, val startingHour: Int, var company: Company.
   }
 
   private def chooseCompany(): Company.Value = {
-    val expectedProfitTaxi: Int = AccountingHelper.getExpectedIncome(workingHours, Company.TAXI)
-    val expectedProfitUber: Int = AccountingHelper.getExpectedIncome(workingHours, Company.UBER)
+    val expectedProfitTaxi: Int = AccountingHelper.getExpectedProfit(workingHours, Company.TAXI)
+    val expectedProfitUber: Int = AccountingHelper.getExpectedProfit(workingHours, Company.UBER)
     if (expectedProfitTaxi > expectedProfitUber) Company.TAXI else Company.UBER
   }
 
   def takeMonthlyDecision(): Unit = {
     val chosenCompany: Company.Value = chooseCompany()
     if (chosenCompany == this.company) {
-      println(s"$this is pleased with current company $company")
+//      println(s"$this is pleased with current company $company")
     } else {
-      println(s"$this is going to change to $chosenCompany")
+//      println(s"$this is going to change to $chosenCompany")
       company = chosenCompany
+      documentChange(chosenCompany)
     }
+  }
+
+  def documentChange(target: Company.Value): Unit = {
+    val record: CompanyChangeRecord = CompanyChangeRecord(Clock.getCurrentDateTime, id, workingHours, target)
+    State.changeHistory = State.changeHistory :+ record
   }
 
 }

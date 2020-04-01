@@ -3,8 +3,6 @@ package hu.corvinus.kt.zsofi.taxi.helpers
 import hu.corvinus.kt.zsofi.taxi.framework.{Clock, State}
 import hu.corvinus.kt.zsofi.taxi.operation.Order
 
-import scala.util.Random
-
 object OrderHelper {
 
   def ordersOfCurrentHour(): Array[Order] = {
@@ -14,7 +12,7 @@ object OrderHelper {
   }
 
   def generateOrder(): Order = {
-    val distance = 1 + Random.nextInt(10)
+    val distance = Util.getRandomIntBetween(State.distanceMin, State.distanceMax)
     val price = State.getPrice(distance)
     Order(distance, price)
   }

@@ -24,9 +24,11 @@ object TimeHelper {
     monthMap(currentMonthNumber)
   }
 
-  def inLastMonth(datetime: DateTime): Boolean = {
-    val oneMonthAgo: DateTime = Clock.getCurrentDateTime.minus(1.month)
-    oneMonthAgo < datetime
+  def inThisMonth(datetime: DateTime): Boolean = {
+    val currentMonth: Int = Clock.getCurrentDateTime.getMonthOfYear
+    datetime.getMonthOfYear == currentMonth
   }
+
+  def prettyDate(dateTime: DateTime): String = s"${dateTime.getYear}-${dateTime.getMonthOfYear}-${dateTime.getDayOfMonth}"
 
 }
