@@ -38,9 +38,11 @@ object World {
   def assignOrders(orders: Array[Order]): Unit = {
     for (order <- orders) {
       val availableDrivers: Array[Driver] = State.drivers.filter(d => d.isWorking && d.isFree)
-      val selectedDriver: Driver = Random.shuffle(availableDrivers.toList).head
-      selectedDriver.takeOrder(order)
-      documentOrder(order, selectedDriver.company)
+      if (availableDrivers.length > 0) {
+        val selectedDriver: Driver = Random.shuffle(availableDrivers.toList).head
+        selectedDriver.takeOrder(order)
+        documentOrder(order, selectedDriver.company)
+      } else println("No available driver at the moment")
     }
   }
 
