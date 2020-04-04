@@ -2,16 +2,19 @@ package hu.corvinus.kt.zsofi.taxi
 
 import hu.corvinus.kt.zsofi.taxi.framework.World
 import hu.corvinus.kt.zsofi.taxi.reporting.Reporter
+import com.typesafe.scalalogging.Logger
 
 object ApplicationRunner {
+  
+  private val logger = Logger("main")
 
   def main(args: Array[String]): Unit = {
-    println("Starting a one-year trial.")
+    logger.info("Starting a one-year trial.")
     Reporter.reportInitialParameters()
     World.initializeDrivers()
     World.operateForAYear()
     Reporter.reportEndStatus()
-    println("One-year trial is over.")
+    logger.info("One-year trial is over.")
   }
 
 }

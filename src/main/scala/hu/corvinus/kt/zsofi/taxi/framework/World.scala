@@ -5,18 +5,21 @@ import hu.corvinus.kt.zsofi.taxi.helpers.OrderHelper._
 import hu.corvinus.kt.zsofi.taxi.helpers.{TimeHelper, Util}
 import hu.corvinus.kt.zsofi.taxi.operation.{Company, Order, OrderRecordState}
 import hu.corvinus.kt.zsofi.taxi.reporting.Reporter
+import com.typesafe.scalalogging.Logger
 
 import scala.util.Random
 
 object World {
+  
+  private val logger = Logger("world")
 
-  def operateForAYear(): Unit = {
+  def operateForAYear(): Unit = {  // TODO: a futtatás hossza fckin legyen paraméterezhető
     while (!TimeHelper.hasAYearPassed) {
       if (TimeHelper.isEndOfMonth) {
         val currentMonth: String = TimeHelper.getCurrentMonth
-        println(s"\nEnd of $currentMonth")
+        logger.info(s"\nEnd of $currentMonth")
         driversDecide()
-        println(s"________________ Report on monthly changes - $currentMonth ________________")
+        logger.info(s"________________ Report on monthly changes - $currentMonth ________________")
         Reporter.reportMonthlyChange()
       }
       operateForAnHour()
@@ -42,7 +45,7 @@ object World {
         val selectedDriver: Driver = Random.shuffle(availableDrivers.toList).head
         selectedDriver.takeOrder(order)
         documentOrder(order, selectedDriver.company)
-      } else println("No available driver at the moment")
+      } else logger.info("No available driver at the moment")
     }
   }
 

@@ -40,9 +40,7 @@ class Driver(val id: Int, val workingHours: Int, val startingHour: Int, var comp
   def takeMonthlyDecision(): Unit = {
     val chosenCompany: Company.Value = chooseCompany()
     if (chosenCompany == this.company) {
-//      println(s"$this is pleased with current company $company")
     } else {
-//      println(s"$this is going to change to $chosenCompany")
       company = chosenCompany
       documentChange(chosenCompany)
     }
