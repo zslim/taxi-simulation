@@ -1,6 +1,6 @@
 package hu.corvinus.kt.zsofi.taxi.helpers
 
-import hu.corvinus.kt.zsofi.taxi.framework.Clock
+import hu.corvinus.kt.zsofi.taxi.framework.{Clock, State}
 import com.github.nscala_time.time.DurationBuilder
 import com.github.nscala_time.time.Imports._
 
@@ -10,7 +10,7 @@ object TimeHelper {
     ((dateTime to Clock.getCurrentDateTime).millis/1000/60/60).toInt.hour
   }
 
-  def hasAYearPassed: Boolean = Clock.startDateTime + 1.year < Clock.getCurrentDateTime
+  def ifTimePassed(duration: Period): Boolean = Clock.startDateTime + duration < Clock.getCurrentDateTime
 
   def isEndOfMonth: Boolean = {
     val now: DateTime = Clock.getCurrentDateTime
@@ -24,11 +24,13 @@ object TimeHelper {
     monthMap(currentMonthNumber)
   }
 
-  def inThisMonth(datetime: DateTime): Boolean = {
-    val currentMonth: Int = Clock.getCurrentDateTime.getMonthOfYear
-    datetime.getMonthOfYear == currentMonth
-  }
+  def inSameMonth(date1: DateTime, date2: DateTime): Boolean = date1.year() == date2.year() && date1.month == date2.month
 
   def prettyDate(dateTime: DateTime): String = s"${dateTime.getYear}-${dateTime.getMonthOfYear}-${dateTime.getDayOfMonth}"
 
+  def getListOfMonths: List[DateTime] = Clock.startDateTime to Clock.startDateTime.plus(State.simulationLength) by 1.month
+
+  def dateToString(date: DateTime): String = {
+    s"${date.getYear}-${date.getMonthOfYear}-${date.getDayOfMonth}_${date.getHourOfDay}-${date.getMinuteOfHour}-${date.getSecondOfMinute}"
+  }
 }

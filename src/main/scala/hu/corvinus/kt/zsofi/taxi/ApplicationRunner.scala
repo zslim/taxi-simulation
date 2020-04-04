@@ -1,7 +1,7 @@
 package hu.corvinus.kt.zsofi.taxi
 
 import hu.corvinus.kt.zsofi.taxi.framework.World
-import hu.corvinus.kt.zsofi.taxi.reporting.Reporter
+import hu.corvinus.kt.zsofi.taxi.reporting.{DataWriter, Reporter}
 import com.typesafe.scalalogging.Logger
 
 object ApplicationRunner {
@@ -9,12 +9,13 @@ object ApplicationRunner {
   private val logger = Logger("main")
 
   def main(args: Array[String]): Unit = {
-    logger.info("Starting a one-year trial.")
+    logger.info("Starting simulation.")
     Reporter.reportInitialParameters()
     World.initializeDrivers()
-    World.operateForAYear()
+    World.simulate()
+    DataWriter.writeResultData()
     Reporter.reportEndStatus()
-    logger.info("One-year trial is over.")
+    logger.info("Simulation is over.")
   }
 
 }

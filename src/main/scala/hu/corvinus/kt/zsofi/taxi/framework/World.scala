@@ -13,13 +13,10 @@ object World {
   
   private val logger = Logger("world")
 
-  def operateForAYear(): Unit = {  // TODO: a futtatás hossza fckin legyen paraméterezhető
-    while (!TimeHelper.hasAYearPassed) {
+  def simulate(): Unit = {
+    while (!TimeHelper.ifTimePassed(State.simulationLength)) {
       if (TimeHelper.isEndOfMonth) {
-        val currentMonth: String = TimeHelper.getCurrentMonth
-        logger.info(s"\nEnd of $currentMonth")
         driversDecide()
-        logger.info(s"________________ Report on monthly changes - $currentMonth ________________")
         Reporter.reportMonthlyChange()
       }
       operateForAnHour()

@@ -3,8 +3,11 @@ package hu.corvinus.kt.zsofi.taxi.framework
 import hu.corvinus.kt.zsofi.taxi.agents.Driver
 import hu.corvinus.kt.zsofi.taxi.helpers.Util
 import hu.corvinus.kt.zsofi.taxi.operation.{CompanyChangeRecord, OrderRecordState}
+import com.github.nscala_time.time.Imports._
 
 object State {
+
+  val simulationLength: Period = 3.months
 
   val numberOfDrivers: Int = 60
   var drivers: Array[Driver] = Array()

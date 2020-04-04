@@ -1,3 +1,4 @@
+// Functions for money-related calculation
 package hu.corvinus.kt.zsofi.taxi.helpers
 
 import hu.corvinus.kt.zsofi.taxi.framework.{Clock, State}
@@ -25,17 +26,10 @@ object AccountingHelper {
   }
 
   def getNetIncomePerOrderForThisMonth(company: Company.Value): Int = {
-    val orders: Array[OrderRecordState] = getOrdersOfCompanyForThisMonth(company)
+    val orders: Array[OrderRecordState] = DataHelper.getOrdersOfCompanyForMonth(Clock.getCurrentDateTime, company)
     if (orders.length > 0) {
       math.round((orders.map(_.price).sum - orders.map(calculateCostsOfOrder).sum) / orders.length)
     } else 0
-  }
-
-  def getOrdersOfCompanyForThisMonth(company: Company.Value): Array[OrderRecordState] = {
-    val orders: Array[OrderRecordState] = State.orderHistory.filter(
-      record => TimeHelper.inThisMonth(record.dateTime) && record.company == company
-    )
-    orders
   }
 
   def getExpectedProfit(workingHours: Int, company: Company.Value): Int = {
